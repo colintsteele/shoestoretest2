@@ -1,9 +1,9 @@
-
+require 'spec_helper'
 
 describe "Month" do
 
   before :all do
-    @driver = Watir::Browser.new
+    @driver = Watir::Browser.new :phantomjs
     @url = 'http://shoestore-manheim.rhcloud.com'
     @page = Home.new(@driver, @url)
 
