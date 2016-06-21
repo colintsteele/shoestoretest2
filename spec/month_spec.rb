@@ -1,84 +1,45 @@
 require 'spec_helper'
 
-describe "Month" do
+@driver = Watir::Browser.new :phantomjs
+@url = 'http://shoestore-manheim.rhcloud.com'
+page = Home.new(@driver, @url)
 
-  before :all do
-    @driver = Watir::Browser.new
-    @url = 'http://shoestore-manheim.rhcloud.com'
-    @page = Home.new(@driver, @url)
+@months = []
 
-    @months = []
+page.months.each do |month|
+  url = @url + '/months/' + month
+  @months << Month.new(@driver, url, month)
+end
+@months.each do |month|
+  describe "Month of #{month.name}" do
 
-    @page.months.each do |month|
-      @months << Month.new(@driver, month)
-    end
-
-  end
-
-  after :all do
-    @driver.quit
-  end
-
-
-  it 'shows images of shoes' do
-    all_images_present = true
-    @months.each do |month|
+    before :all do
       month.visit
-      @driver.tds( class:'shoe_image' ).each do |image|
-        bad_image = image.img.attribute_value('src').eql? nil
-        all_images_present = false unless bad_image
-
-      end
-    end
-    expect( all_images_present ).to be_truthy
-  end
-
-  it 'has a blurb' do
-    all_blurbs_present = true
-
-    @months.each do |month|
-      month.visit
-
-      all_blurbs_present = false unless @driver.td(class:'shoe_description').exists?
-
-      @driver.tds( class:'shoe_description' ).each do |desc|
-
-        if desc.text.nil?
-          all_blurbs_present = false
-        else
-          all_blurbs_present = false if desc.text == ''
-        end
-
-      end
     end
 
-    expect( all_blurbs_present ).to be_truthy
-  end
-
-  it 'has a price' do
-    all_prices_present = true
-
-    @months.each do |month|
-      month.visit
-
-      all_prices_present = false unless @driver.td(class:'shoe_price').exists?
-
-      @driver.tds( class:'shoe_price' ).each do |desc|
-
-        if desc.text.nil?
-          all_prices_present = false
-        else
-          all_prices_present = false if desc.text == ''
-        end
-
-      end
+    before :each do
+      #@result = month.shoe_results?
     end
-    expect( all_prices_present ).to be_truthy
-    
+
+    it 'shows prices' do
+      all_prices_present = true
+      all_prices_present = month.all_shoe_prices_present?
+      expect( all_prices_present ).to be_truthy
+    end
+
+    it 'has images of shoes' do
+      all_images_present = true
+      all_images_present = month.all_shoe_images_present?
+      expect( all_images_present ).to be_truthy
+    end
+
+    it 'has a blurb' do
+      binding.pry if month.name == 'january'
+      all_blurbs_present = true
+      all_blurbs_present = month.all_blurbs_present?
+      expect( all_blurbs_present ).to be_truthy
+    end
+
+
   end
-
-
-
-
-
 end

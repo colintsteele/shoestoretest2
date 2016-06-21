@@ -26,8 +26,7 @@ class Home
 
     @driver.div( id:'header_nav' ).lis.each do |li|
       li.links.each do |link|
-        links << @url + '/months/' + link.text.downcase
-        #links << link.text.downcase
+        links << link.text.downcase
       end
     end
     links
