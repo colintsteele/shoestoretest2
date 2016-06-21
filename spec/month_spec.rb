@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-@driver = Watir::Browser.new :phantomjs
+@driver = Watir::Browser.new
 @url = 'http://shoestore-manheim.rhcloud.com'
 page = Home.new(@driver, @url)
 
