@@ -4,7 +4,7 @@ describe 'Subscription Field' do
 
   before :all do
 
-    @driver = Watir::Browser.new :phantomjs
+    @driver = Watir::Browser.new 
     @url = 'http://shoestore-manheim.rhcloud.com/'
     @page = Home.new(@driver, @url)
   end
