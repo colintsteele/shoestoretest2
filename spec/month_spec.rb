@@ -34,7 +34,6 @@ end
     end
 
     it 'has a blurb' do
-      binding.pry if month.name == 'january'
       all_blurbs_present = true
       all_blurbs_present = month.all_blurbs_present?
       expect( all_blurbs_present ).to be_truthy
